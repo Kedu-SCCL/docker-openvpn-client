@@ -1,0 +1,13 @@
+# Log all dns queries
+log-queries
+
+# Dont use hosts nameservers
+no-resolv
+
+# Use google as default nameservers
+server=8.8.4.4
+server=8.8.8.8
+
+# Add your custom lines here
+server=/vpn.example.com/8.8.8.8
+server=/example.com/10.41.0.2

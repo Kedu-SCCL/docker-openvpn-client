@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+ app:
+  container_name: ${APP_NAME}
+  image: ${APP_IMAGE_LOCAL}/${APP_NAME}:${APP_VERSION}
+  restart: ${APP_RESTART}
+  networks:
+   - ${NETWORK_OPENVPN_CLIENT}
+  build:
+   context: .
+   args:
+    - IMAGE=${APP_IMAGE}
+    - VERSION=${APP_VERSION}
+  environment:
+   - TZ=${APP_TZ}
+  volumes:
+   - ${APP_VOLUME_DNSMASQ_HOST}:${APP_VOLUME_DNSMASQ_CONTAINER}
+   - ${APP_VOLUME_CERT_HOST}:${APP_VOLUME_CERT_CONTAINER}
+  devices:
+   - ${APP_DEVICE_TUN_HOST}:${APP_DEVICE_TUN_CONTAINER}
+  cap_add:
+   - NET_ADMIN
+
+ test:
+  container_name: test
+  depends_on:
+   - app
+  image: debian:testing
+  network_mode: "service:app"
+  command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+networks:
+ network-openvpn-client:
+  name: ${NETWORK_OPENVPN_CLIENT}
