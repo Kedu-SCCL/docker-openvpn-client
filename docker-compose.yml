@@ -8,6 +8,7 @@ services:
   restart: ${APP_RESTART}
   networks:
    - ${NETWORK_OPENVPN_CLIENT}
+  dns: 127.0.0.1
   build:
    context: .
    args:
